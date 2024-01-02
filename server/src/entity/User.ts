@@ -1,5 +1,10 @@
 import { Field, Int, ObjectType } from "type-graphql";
-import { Entity, PrimaryGeneratedColumn, Column, BaseEntity } from "typeorm";
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  BaseEntity
+} from "typeorm";
 
 @ObjectType()
 @Entity("users")
@@ -9,7 +14,7 @@ export class User extends BaseEntity {
   id: number;
 
   @Field()
-  @Column()
+  @Column({ unique: true })
   email: string;
 
   @Column()

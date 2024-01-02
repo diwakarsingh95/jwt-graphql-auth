@@ -909,9 +909,9 @@
     ws "^8.13.0"
 
 "@graphql-tools/executor-http@^1.0.0", "@graphql-tools/executor-http@^1.0.5":
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/@graphql-tools/executor-http/-/executor-http-1.0.5.tgz#eb2070404270e33715afd8aebc97e1389c193e2b"
-  integrity sha512-roQyDLOAywyaCTPOhwXiT/WDr0bfuVhqOXjECsnrIl/1TMPDUYjiT2sW6Gz6pqnYMmokdhyvlV6D5d7WtIrKsA==
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/@graphql-tools/executor-http/-/executor-http-1.0.6.tgz#eb0d50b1231a3d6c272e8b0c010f11b1072884ae"
+  integrity sha512-EKZ6b7EtP+oUs+jG4r5OUYRl4OolcRzQElAZofA4TFCK4k7HxlKh8DAwdD2eZHSt/s8q6uRG1dAE0lqfMAA9qQ==
   dependencies:
     "@graphql-tools/utils" "^10.0.2"
     "@repeaterjs/repeater" "^3.0.4"
@@ -3968,7 +3968,6 @@ string-env-interpolation@^1.0.1:
   integrity sha512-78lwMoCcn0nNu8LszbP1UA7g55OeE4v7rCeWnM5B453rnNr4aq+5it3FEYtZrSEiMvHZOZ9Jlqb0OD0M2VInqg==
 
 "string-width-cjs@npm:string-width@^4.2.0", string-width@^4.1.0, string-width@^4.2.0, string-width@^4.2.3:
-  name string-width-cjs
   version "4.2.3"
   resolved "https://registry.yarnpkg.com/string-width/-/string-width-4.2.3.tgz#269c7117d27b05ad2e536830a8ec895ef9c6d010"
   integrity sha512-wKyQRQpjJ0sIp62ErSZdGsjMJWsap5oRNihHhu6G7JVO/9jIB6UyevL+tXuOqrng8j/cxKTWyWUwvSTriiZz/g==

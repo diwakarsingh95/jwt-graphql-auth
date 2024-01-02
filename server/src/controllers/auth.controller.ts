@@ -22,7 +22,7 @@ export const refreshToken = async (req: Request, res: Response) => {
 
     const user = await User.findOne({ where: { id: tokenPayload.userId } });
     if (!user) throw Error(USER_NOT_FOUND);
-    else if (user.tokenVersion !== token.tokenVersion)
+    else if (user.tokenVersion !== tokenPayload.tokenVersion)
       throw Error(INVALID_TOKEN);
 
     sendRefreshToken(res, createRefreshToken(user));

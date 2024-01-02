@@ -12,3 +12,6 @@ export const USER_NOT_FOUND = "User not found.";
 export const INVALID_LOGIN = "Invalid credentials.";
 export const NOT_AUTHORIZED = "Not authorized.";
 export const INVALID_TOKEN = "Invalid token.";
+export const USER_ALREADY_EXISTS = "User already exists.";
+export const REGISTRATION_SUCCESS = "Registration successful";
+export const SOMETHING_WENT_WRONG = "Something went wrong.";

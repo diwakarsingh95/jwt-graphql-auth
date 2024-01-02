@@ -13,7 +13,9 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  * Therefore it is highly recommended to use the babel or swc plugin for production.
  */
 const documents = {
+    "\n  mutation Register($password: String!, $email: String!) {\n    register(password: $password, email: $email) {\n      success\n      message\n    }\n  }\n": types.RegisterDocument,
     "\n  mutation Login($email: String!, $password: String!) {\n    login(email: $email, password: $password) {\n      accessToken\n    }\n  }\n": types.LoginDocument,
+    "\n  mutation Mutation {\n    logout\n  }\n": types.MutationDocument,
 };
 
 /**
@@ -33,7 +35,15 @@ export function gql(source: string): unknown;
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
+export function gql(source: "\n  mutation Register($password: String!, $email: String!) {\n    register(password: $password, email: $email) {\n      success\n      message\n    }\n  }\n"): (typeof documents)["\n  mutation Register($password: String!, $email: String!) {\n    register(password: $password, email: $email) {\n      success\n      message\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
 export function gql(source: "\n  mutation Login($email: String!, $password: String!) {\n    login(email: $email, password: $password) {\n      accessToken\n    }\n  }\n"): (typeof documents)["\n  mutation Login($email: String!, $password: String!) {\n    login(email: $email, password: $password) {\n      accessToken\n    }\n  }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n  mutation Mutation {\n    logout\n  }\n"): (typeof documents)["\n  mutation Mutation {\n    logout\n  }\n"];
 
 export function gql(source: string) {
   return (documents as any)[source] ?? {};
