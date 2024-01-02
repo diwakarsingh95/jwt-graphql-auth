@@ -1,16 +1,23 @@
 import {
   Arg,
+  Ctx,
   Field,
   Mutation,
   ObjectType,
   Query,
   Resolver,
+  UseMiddleware,
 } from "type-graphql";
 import { compare, hash } from "bcryptjs";
-import { sign } from "jsonwebtoken";
 import { User } from "../entity/User";
-
-const JWT_SECRET = "ps6lzFSyYP7e8a6GJCsXtANTQefw0s1O";
+import { HttpContext } from "../types";
+import {
+  createAccessToken,
+  createRefreshToken,
+  sendRefreshToken,
+} from "../utils/auth";
+import { authMiddleware } from "../middlewares/auth.middleware";
+import { INVALID_LOGIN, USER_NOT_FOUND } from "../utils/constants";
 
 @ObjectType()
 class LoginResponse {
@@ -21,27 +28,32 @@ class LoginResponse {
 @Resolver()
 export class UserResolver {
   @Query(() => [User])
-  users() {
+  @UseMiddleware(authMiddleware)
+  users(@Ctx() { payload }: HttpContext) {
+    console.log(payload);
     return User.find();
   }
 
   @Mutation(() => LoginResponse)
   async login(
     @Arg("email") email: string,
-    @Arg("password") password: string
+    @Arg("password") password: string,
+    @Ctx() { res }: HttpContext
   ): Promise<LoginResponse> {
     const user = await User.findOne({ where: { email } });
 
     if (!user) {
-      throw new Error("User not found.");
+      throw new Error(USER_NOT_FOUND);
     }
 
     const isValidPassword = await compare(password, user.password);
 
-    if (!isValidPassword) throw new Error("Invalid credentials.");
+    if (!isValidPassword) throw new Error(INVALID_LOGIN);
+
+    sendRefreshToken(res, createRefreshToken(user));
 
     return {
-      accessToken: sign({ userId: user.id }, JWT_SECRET, { expiresIn: "1h" }),
+      accessToken: createAccessToken(user),
     };
   }
 
