@@ -6,18 +6,24 @@ import {
   verifyRefreshToken,
 } from "..//utils/auth";
 import { User } from "../entity/User";
-import { REFRESH_TOKEN_COOKIE_NAME, USER_NOT_FOUND } from "../utils/constants";
+import {
+  INVALID_TOKEN,
+  REFRESH_TOKEN_COOKIE_NAME,
+  USER_NOT_FOUND,
+} from "../utils/constants";
 
 export const refreshToken = async (req: Request, res: Response) => {
   try {
     const token = req.cookies[REFRESH_TOKEN_COOKIE_NAME];
-    if (!token) throw Error("Invalid Token");
+    if (!token) throw Error(INVALID_TOKEN);
 
-    const userId = verifyRefreshToken(token);
-    if (!userId) throw Error("Invalid Token");
+    const tokenPayload = verifyRefreshToken(token);
+    if (!tokenPayload) throw Error(INVALID_TOKEN);
 
-    const user = await User.findOne({ where: { id: userId } });
+    const user = await User.findOne({ where: { id: tokenPayload.userId } });
     if (!user) throw Error(USER_NOT_FOUND);
+    else if (user.tokenVersion !== token.tokenVersion)
+      throw Error(INVALID_TOKEN);
 
     sendRefreshToken(res, createRefreshToken(user));
     res.send({ accessToken: createAccessToken(user) });

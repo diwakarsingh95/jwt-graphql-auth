@@ -8,6 +8,7 @@ import {
   REFRESH_TOKEN_EXPIRATION_TIME,
   REFRESH_TOKEN_SECRET,
 } from "./constants";
+import { AppDataSource } from "src/data-source";
 
 export const createAccessToken = (user: User) => {
   return sign({ userId: user.id }, ACCESS_TOKEN_SECRET, {
@@ -16,9 +17,13 @@ export const createAccessToken = (user: User) => {
 };
 
 export const createRefreshToken = (user: User) => {
-  return sign({ userId: user.id }, REFRESH_TOKEN_SECRET, {
-    expiresIn: REFRESH_TOKEN_EXPIRATION_TIME,
-  });
+  return sign(
+    { userId: user.id, tokenVersion: user.tokenVersion },
+    REFRESH_TOKEN_SECRET,
+    {
+      expiresIn: REFRESH_TOKEN_EXPIRATION_TIME,
+    }
+  );
 };
 
 export const verifyRefreshToken = (refreshToken: string) => {
@@ -26,9 +31,17 @@ export const verifyRefreshToken = (refreshToken: string) => {
 
   if (!payload || (payload && !payload.userId)) return false;
 
-  return payload.userId;
+  return payload;
 };
 
 export const sendRefreshToken = (res: Response, token: string) => {
   return res.cookie(REFRESH_TOKEN_COOKIE_NAME, token, { httpOnly: true });
+};
+
+export const revokeRefreshToken = (userId: number) => {
+  return AppDataSource.getRepository(User).increment(
+    { id: userId },
+    "tokenVersion",
+    1
+  );
 };

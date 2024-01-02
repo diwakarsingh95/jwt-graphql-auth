@@ -11,3 +11,4 @@ export const REFRESH_TOKEN_EXPIRATION_TIME =
 export const USER_NOT_FOUND = "User not found.";
 export const INVALID_LOGIN = "Invalid credentials.";
 export const NOT_AUTHORIZED = "Not authorized.";
+export const INVALID_TOKEN = "Invalid token.";
