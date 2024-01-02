@@ -8,7 +8,7 @@ import {
   REFRESH_TOKEN_EXPIRATION_TIME,
   REFRESH_TOKEN_SECRET,
 } from "./constants";
-import { AppDataSource } from "src/data-source";
+import { AppDataSource } from "../data-source";
 
 export const createAccessToken = (user: User) => {
   return sign({ userId: user.id }, ACCESS_TOKEN_SECRET, {
