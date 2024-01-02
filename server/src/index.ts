@@ -2,6 +2,7 @@ import "dotenv/config";
 import express from "express";
 import http from "http";
 import cookieParser from "cookie-parser";
+import cors from "cors";
 import { ApolloServer } from "@apollo/server";
 import { expressMiddleware } from "@apollo/server/express4";
 import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
@@ -15,6 +16,11 @@ const PORT = process.env.PORT || 8080;
 (async () => {
   const app = express();
   app.use(cookieParser());
+  app.use(
+    cors({
+      methods: ["POST"],
+    })
+  );
   const httpServer = http.createServer(app);
 
   await AppDataSource.initialize();
