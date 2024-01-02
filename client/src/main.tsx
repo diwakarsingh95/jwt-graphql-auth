@@ -3,9 +3,7 @@ import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
 import "./index.css";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
-
-const BACKEND_URL =
-  import.meta.env.VITE_BACKEND_URL || "http://localhost:8080/graphql";
+import { BACKEND_URL } from "./utils/constants";
 
 const apolloClient = new ApolloClient({
   uri: BACKEND_URL,
