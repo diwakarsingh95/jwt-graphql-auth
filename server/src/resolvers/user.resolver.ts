@@ -12,14 +12,14 @@ import { compare, hash } from "bcryptjs";
 import { User } from "../entity/User";
 import { HttpContext } from "../types";
 import {
+  clearRefreshTokenCookie,
   createAccessToken,
   createRefreshToken,
-  sendRefreshToken,
+  setRefreshTokenCookie,
 } from "../utils/auth";
 import { authMiddleware } from "../middlewares/auth.middleware";
 import {
   INVALID_LOGIN,
-  REFRESH_TOKEN_COOKIE_NAME,
   REGISTRATION_SUCCESS,
   SOMETHING_WENT_WRONG,
   USER_ALREADY_EXISTS,
@@ -44,6 +44,7 @@ class RegisterResponse {
 @Resolver()
 export class UserResolver {
   @Query(() => [User])
+  @UseMiddleware(authMiddleware)
   users() {
     return User.find();
   }
@@ -64,7 +65,7 @@ export class UserResolver {
 
     if (!isValidPassword) throw new Error(INVALID_LOGIN);
 
-    sendRefreshToken(res, createRefreshToken(user));
+    setRefreshTokenCookie(res, createRefreshToken(user));
 
     return {
       accessToken: createAccessToken(user),
@@ -98,7 +99,7 @@ export class UserResolver {
   @Mutation(() => Boolean)
   @UseMiddleware(authMiddleware)
   async logout(@Ctx() { res }: HttpContext) {
-    res.clearCookie(REFRESH_TOKEN_COOKIE_NAME);
+    clearRefreshTokenCookie(res);
     return true;
   }
 }

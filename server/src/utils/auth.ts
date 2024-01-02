@@ -34,8 +34,18 @@ export const verifyRefreshToken = (refreshToken: string) => {
   return payload;
 };
 
-export const sendRefreshToken = (res: Response, token: string) => {
-  return res.cookie(REFRESH_TOKEN_COOKIE_NAME, token, { httpOnly: true });
+export const setRefreshTokenCookie = (res: Response, token: string) => {
+  return res.cookie(REFRESH_TOKEN_COOKIE_NAME, token, {
+    httpOnly: true,
+    path: "/refresh_token",
+  });
+};
+
+export const clearRefreshTokenCookie = (res: Response) => {
+  return res.clearCookie(REFRESH_TOKEN_COOKIE_NAME, {
+    httpOnly: true,
+    path: "/refresh_token",
+  });
 };
 
 export const revokeRefreshToken = (userId: number) => {

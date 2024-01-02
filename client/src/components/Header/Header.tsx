@@ -1,10 +1,11 @@
 import { useContext } from "react";
-import { Link, NavLink } from "react-router-dom";
-import { AuthContext, AuthContextType } from "../../context/AuthContext";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useMutation } from "@apollo/client";
+import { AuthContext, AuthContextType } from "../../context/AuthContext";
 import { LOGOUT_MUTATION } from "../../gql/auth.gql";
 
 const Header = () => {
+  const navigate = useNavigate();
   const { accessToken, setAccessToken } = useContext(
     AuthContext
   ) as AuthContextType;
@@ -20,6 +21,7 @@ const Header = () => {
         },
       });
       setAccessToken("");
+      navigate("/login");
     } catch (err) {
       console.error(err);
       if (err instanceof Error) alert(err.message);

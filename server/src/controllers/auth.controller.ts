@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import {
   createAccessToken,
   createRefreshToken,
-  sendRefreshToken,
+  setRefreshTokenCookie,
   verifyRefreshToken,
 } from "..//utils/auth";
 import { User } from "../entity/User";
@@ -18,14 +18,18 @@ export const refreshToken = async (req: Request, res: Response) => {
     if (!token) throw Error(INVALID_TOKEN);
 
     const tokenPayload = verifyRefreshToken(token);
-    if (!tokenPayload) throw Error(INVALID_TOKEN);
+    if (
+      !tokenPayload ||
+      (tokenPayload && tokenPayload.exp! * 1000 < Date.now())
+    )
+      throw Error(INVALID_TOKEN);
 
     const user = await User.findOne({ where: { id: tokenPayload.userId } });
     if (!user) throw Error(USER_NOT_FOUND);
     else if (user.tokenVersion !== tokenPayload.tokenVersion)
       throw Error(INVALID_TOKEN);
 
-    sendRefreshToken(res, createRefreshToken(user));
+    setRefreshTokenCookie(res, createRefreshToken(user));
     res.send({ accessToken: createAccessToken(user) });
   } catch (err) {
     console.error(err);
